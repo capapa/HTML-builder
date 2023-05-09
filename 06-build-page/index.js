@@ -38,8 +38,6 @@ const buildCSS = async () => {
           encoding: "utf-8",
         });
         arr.push(data);
-        // const rs = fs.createReadStream(fileFrom, { encoding: "utf-8" });
-        // rs.on("data", (chunk) => arr.push(chunk));
       }
     }
 

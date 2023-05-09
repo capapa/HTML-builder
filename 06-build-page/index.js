@@ -48,5 +48,34 @@ const buildCSS = async () => {
   }
 };
 
+const buildHTML = async () => {
+  try {
+    const pathTemplate = path.join(__dirname, "template.html");
+    const pathFrom = path.join(__dirname, "components");
+    const fileBundle = path.join(__dirname, "project-dist", "index.html");
+
+    const ws = fs.createWriteStream(fileBundle);
+    let template = await fsp.readFile(pathTemplate, { encoding: "utf-8" });
+    const files = await fsp.readdir(pathFrom);
+
+    for (const file of files) {
+      const fileFrom = path.join(pathFrom, file);
+      const { name: tag, ext } = path.parse(fileFrom);
+      if (ext === ".html") {
+        const dataTemplate = await fsp.readFile(fileFrom, {
+          encoding: "utf-8",
+        });
+        template = template.replace(`{{${tag}}}`, dataTemplate);
+      }
+    }
+
+    ws.write(template);
+    ws.end();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 copyDir();
 buildCSS();
+buildHTML();

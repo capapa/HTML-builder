@@ -34,15 +34,17 @@ const buildCSS = async () => {
       const fileFrom = path.join(pathFrom, file);
       const { ext } = path.parse(fileFrom);
       if (ext === ".css") {
-        const rs = fs.createReadStream(fileFrom, { encoding: "utf-8" });
-        rs.on("data", (chunk) => arr.push(chunk));
+        const data = await fsp.readFile(fileFrom, {
+          encoding: "utf-8",
+        });
+        arr.push(data);
+        // const rs = fs.createReadStream(fileFrom, { encoding: "utf-8" });
+        // rs.on("data", (chunk) => arr.push(chunk));
       }
     }
 
-    process.on("exit", () => {
-      ws.write(arr.join(""));
-      ws.end();
-    });
+    ws.write(arr.join(""));
+    ws.end();
   } catch (err) {
     console.log(err);
   }

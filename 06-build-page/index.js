@@ -76,6 +76,10 @@ const buildHTML = async () => {
   }
 };
 
-copyDir();
-buildCSS();
-buildHTML();
+const buildApp = async () => {
+  await copyDir();
+  buildCSS();
+  buildHTML();
+};
+
+buildApp();
